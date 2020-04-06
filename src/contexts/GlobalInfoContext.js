@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 export const Context = createContext();
 
 const GlobalInfoContext = ({ children }) => {
-  const [globalInfo, setGlobalInfo] = useState(null);
+  const [globalInfo, setGlobalInfo] = useState({});
 
   return (
     <Context.Provider value={{ globalInfo, setGlobalInfo }}>
