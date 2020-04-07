@@ -1,6 +1,6 @@
-import React from 'react';
-import { Context } from "../contexts/GlobalStateContext";
-import Api from "../constants/Api";
+import { useState, useContext, useRef } from 'react';
+import { Context } from '../contexts/GlobalStateContext';
+import Api from '../constants/Api';
 
 const useAllCountriesInfo = () => {
   const { allCountriesInfo, setAllCountriesInfo } = useContext(Context);
@@ -21,8 +21,8 @@ const useAllCountriesInfo = () => {
       const data = await res.json();
 
       setAllCountriesInfo(data);
-    } catch (error) {
-      if (error.name !== 'AbortError') {
+    } catch (e) {
+      if (e.name !== 'AbortError') {
         setError(error);
       }
     }
@@ -35,7 +35,7 @@ const useAllCountriesInfo = () => {
     cancel,
     isLoading,
     allCountriesInfo,
-    error
+    error,
   };
 };
 

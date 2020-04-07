@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { logError } from "../utilities/helpers";
+import { logError } from './helpers';
 
 const globalInfoTimestamp = 'globalInfoTimestamp';
 const globalInfo = 'globalInfo';

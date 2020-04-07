@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+
 export const Context = createContext();
 
 const GlobalStateContext = ({ children }) => {
@@ -9,7 +10,7 @@ const GlobalStateContext = ({ children }) => {
     globalInfo,
     setGlobalInfo,
     allCountriesInfo,
-    setAllCountriesInfo
+    setAllCountriesInfo,
   };
 
   return (
