@@ -1,16 +1,25 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import Colors from '../constants/Colors';
 
-const DynamicScreen = ({ style, isLoading, hasContent, error, children }) => {
+const DynamicScreen = ({ style, isLoading, hasContent, error, children, onEnter, onLeave }) => {
   const rootStyles = [s.root, style];
+
+  useFocusEffect(
+    useCallback(() => {
+      onEnter();
+      return onLeave;
+    }, []),
+  );
 
   if (isLoading) {
     return (
       <View style={[rootStyles, s.rootCentered]}>
-          <ActivityIndicator
-            size="large"
-            color='white'
-          />
+        <ActivityIndicator
+          size="large"
+          color="white"
+        />
       </View>
     );
   }
@@ -38,14 +47,20 @@ const DynamicScreen = ({ style, isLoading, hasContent, error, children }) => {
   );
 };
 
+DynamicScreen.defaultProps = {
+  onEnter: Function.prototype,
+  onLeave: Function.prototype,
+};
+
 const s = StyleSheet.create({
-    root: {
-        flex: 1
-    },
-    rootCentered: {
-      justifyContent: 'center',
-      alignItems: 'center'
-    }
+  root: {
+    flex: 1,
+    backgroundColor: Colors.black,
+  },
+  rootCentered: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default DynamicScreen;

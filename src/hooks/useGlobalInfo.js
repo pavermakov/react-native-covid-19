@@ -1,18 +1,31 @@
-import React, { useState, useRef, useContext } from 'react';
-import { Context } from "../contexts/GlobalStateContext";
-import Api from "../constants/Api";
+import { useState, useRef, useContext } from 'react';
+import { Context } from '../contexts/GlobalStateContext';
+import Api from '../constants/Api';
 import {
   getGlobalInfo,
   getGlobalInfoTimestamp,
   cacheGlobalInfo,
-} from "../utilities/localStorage";
-import { logError, shouldRefetchData } from "../utilities/helpers";
+} from '../utilities/localStorage';
+import { logError, isApiDataRefreshRequired } from '../utilities/helpers';
+
+const fetchData = async (url, { controller }) => {
+  const timestamp = await getGlobalInfoTimestamp();
+
+  if (timestamp && !isApiDataRefreshRequired()) {
+    const cachedData = await getGlobalInfo();
+    return { data: cachedData };
+  }
+
+  const res = await fetch(url, { signal: controller.current.signal });
+  const data = await res.json();
+
+  return { data, isFresh: true };
+};
 
 const useGlobalInfo = () => {
   const {
     globalInfo,
     setGlobalInfo,
-    globalInfoTimestamp,
   } = useContext(Context);
 
   const [isLoading, setLoading] = useState(false);
@@ -20,28 +33,22 @@ const useGlobalInfo = () => {
   const controller = useRef(new AbortController());
 
   const fetchGlobalInfo = async () => {
-    const timestamp = await getGlobalInfoTimestamp();
-
-    if (timestamp && shouldRefetchData()) {
-      const cachedGlobalInfo = await getGlobalInfo();
-      return void setGlobalInfo(cachedGlobalInfo);
-    }
-
     setLoading(true);
     setError(null);
 
     try {
       controller.current = new AbortController();
 
-      const res = await fetch(Api.fetchGlobalInfo, { signal: controller.current.signal });
-      const data = await res.json();
-
+      const { data, isFresh } = await fetchData(Api.fetchGlobalInfo, { controller });
       setGlobalInfo(data);
-      await cacheGlobalInfo(data);
-    } catch (error) {
+
+      if (isFresh) {
+        await cacheGlobalInfo(data);
+      }
+    } catch (e) {
       if (error.name !== 'AbortError') {
-        logError(error);
-        setError(error);
+        logError(e);
+        setError(e);
       }
     }
 
@@ -57,7 +64,7 @@ const useGlobalInfo = () => {
     cancel,
     isLoading,
     globalInfo,
-    error
+    error,
   };
 };
 

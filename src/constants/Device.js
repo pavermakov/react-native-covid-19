@@ -1,7 +1,7 @@
-import { Platform } from "react-native";
+import { Platform } from 'react-native';
 
 const isIos = Platform.OS === 'ios';
 
 export default {
-  isIos
+  isIos,
 };
