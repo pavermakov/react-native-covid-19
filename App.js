@@ -11,7 +11,7 @@ import useLinking from './src/navigation/useLinking';
 import Device from "./src/constants/Device";
 import Colors from "./src/constants/Colors";
 
-import GlobalInfoContext from './src/contexts/GlobalInfoContext';
+import GlobalStateContext from './src/contexts/GlobalStateContext';
 
 const Stack = createStackNavigator();
 
@@ -52,7 +52,7 @@ export default function App(props) {
   }
 
   return (
-    <GlobalInfoContext>
+    <GlobalStateContext>
       <View style={s.root}>
         {Device.isIos &&
           <StatusBar barStyle="default" />
@@ -70,7 +70,7 @@ export default function App(props) {
           </Stack.Navigator>
         </NavigationContainer>
       </View>
-    </GlobalInfoContext>
+    </GlobalStateContext>
   );
 }
 
