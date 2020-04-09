@@ -1,7 +1,7 @@
 const tintColor = '#2f95dc';
 
 const white = '#fff';
-const black = '#121212';
+const black = '#111111';
 
 export default {
   white,

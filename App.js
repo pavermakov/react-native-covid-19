@@ -1,5 +1,5 @@
-import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { SplashScreen } from 'expo';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,10 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
-import useLinking from './src/navigation/useLinking';
-import Device from "./src/constants/Device";
-import Colors from "./src/constants/Colors";
-
+import Colors from './src/constants/Colors';
 import GlobalStateContext from './src/contexts/GlobalStateContext';
 
 const Stack = createStackNavigator();
@@ -23,17 +20,13 @@ const loadFonts = async () => {
 };
 
 export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const containerRef = React.useRef();
-  const { getInitialState } = useLinking(containerRef);
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
 
   // Load any resources or data that we need prior to rendering the app
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
-        setInitialNavigationState(await getInitialState());
         await loadFonts();
       } catch (e) {
         // We might want to provide this error information to an error reporting service
@@ -54,15 +47,19 @@ export default function App(props) {
   return (
     <GlobalStateContext>
       <View style={s.root}>
-        {Device.isIos &&
-          <StatusBar barStyle="default" />
-        }
+        <StatusBar barStyle="default" />
 
-        <NavigationContainer
-          ref={containerRef}
-          initialState={initialNavigationState}
-        >
-          <Stack.Navigator>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: Colors.black,
+              },
+              headerTitleStyle: {
+                color: Colors.white,
+              },
+            }}
+          >
             <Stack.Screen
               name="Root"
               component={BottomTabNavigator}
@@ -77,6 +74,5 @@ export default function App(props) {
 const s = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.white,
   },
 });

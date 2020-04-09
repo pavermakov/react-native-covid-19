@@ -1,17 +1,9 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 
-const DynamicScreen = ({ style, isLoading, hasContent, error, children, onEnter, onLeave }) => {
+const DynamicContent = ({ style, isLoading, hasContent, error, children }) => {
   const rootStyles = [s.root, style];
-
-  useFocusEffect(
-    useCallback(() => {
-      onEnter();
-      return onLeave;
-    }, []),
-  );
 
   if (isLoading) {
     return (
@@ -47,7 +39,7 @@ const DynamicScreen = ({ style, isLoading, hasContent, error, children, onEnter,
   );
 };
 
-DynamicScreen.defaultProps = {
+DynamicContent.defaultProps = {
   onEnter: Function.prototype,
   onLeave: Function.prototype,
 };
@@ -63,4 +55,4 @@ const s = StyleSheet.create({
   },
 });
 
-export default DynamicScreen;
+export default DynamicContent;

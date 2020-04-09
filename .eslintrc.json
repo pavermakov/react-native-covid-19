@@ -30,6 +30,7 @@
         "function-paren-newline": ["off"],
         "object-curly-newline": ["off"],
         "no-void": ["off"],
-        "consistent-return": ["off"]
+        "consistent-return": ["off"],
+        "react/destructuring-assignment": ["off"]
     }
 }

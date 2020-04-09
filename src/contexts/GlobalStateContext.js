@@ -4,7 +4,7 @@ export const Context = createContext();
 
 const GlobalStateContext = ({ children }) => {
   const [globalInfo, setGlobalInfo] = useState({});
-  const [allCountriesInfo, setAllCountriesInfo] = useState({});
+  const [allCountriesInfo, setAllCountriesInfo] = useState([]);
 
   const value = {
     globalInfo,
