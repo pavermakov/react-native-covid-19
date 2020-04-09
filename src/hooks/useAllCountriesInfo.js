@@ -2,6 +2,15 @@ import { useState, useContext, useRef } from 'react';
 import { Context } from '../contexts/GlobalStateContext';
 import Api from '../constants/Api';
 
+const ignored = ['World', ''];
+
+const fetchData = async (url, { controller }) => {
+  const res = await fetch(url, { signal: controller.current.signal });
+  const data = await res.json();
+
+  return { data, isFresh: true };
+};
+
 const useAllCountriesInfo = () => {
   const { allCountriesInfo, setAllCountriesInfo } = useContext(Context);
   const [isLoading, setLoading] = useState(false);
@@ -17,8 +26,10 @@ const useAllCountriesInfo = () => {
     setError(null);
 
     try {
-      const res = await fetch(Api.fetchGlobalInfo, { signal: controller.current.signal });
-      const data = await res.json();
+      controller.current = new AbortController();
+
+      let { data, isFresh } = await fetchData(Api.fetchAllCountriesInfo, { controller });
+      data = data.filter((item) => !ignored.includes(item.country));
 
       setAllCountriesInfo(data);
     } catch (e) {
