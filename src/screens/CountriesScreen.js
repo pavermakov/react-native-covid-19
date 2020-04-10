@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 
 import Screen from '../components/Screen';
@@ -19,7 +19,9 @@ const CountriesScreen = () => {
   } = useAllCountriesInfo();
 
   const [search, setSearch] = useState('');
-  const filteredCountries = allCountriesInfo.filter((item) => item.country.toLowerCase().includes(search));
+  const filteredCountries = allCountriesInfo.filter((item) => {
+    return item.country.toLowerCase().includes(search.toLowerCase());
+  });
 
   const cleanup = () => {
     cancel();
@@ -28,7 +30,6 @@ const CountriesScreen = () => {
 
   return (
     <Screen
-      style={s.root}
       onEnter={fetchAllCountriesInfo}
       onLeave={cleanup}
     >
@@ -75,10 +76,6 @@ const CountriesScreen = () => {
 };
 
 const s = StyleSheet.create({
-  root: {
-
-  },
-
   country: {
     backgroundColor: '#1a1b1f',
     paddingLeft: 15,

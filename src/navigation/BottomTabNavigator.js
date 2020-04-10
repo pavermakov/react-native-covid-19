@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import GlobalScreen from '../screens/GlobalScreen';
 import CountriesScreen from '../screens/CountriesScreen';
+import AboutScreen from '../screens/AboutScreen';
 import Colors from '../constants/Colors';
 
 const BottomTab = createBottomTabNavigator();
@@ -21,6 +22,9 @@ const getHeaderTitle = (route) => {
 
     case 'Countries':
       return 'Coronavirus by Country';
+
+    case 'About':
+      return 'About'
   }
 }
 
@@ -54,6 +58,15 @@ const BottomTabNavigator = ({ navigation, route }) => {
         options={{
           title: 'Countries',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-flag" />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name="About"
+        component={AboutScreen}
+        options={{
+          title: 'About',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-help-circle" />,
         }}
       />
     </BottomTab.Navigator>

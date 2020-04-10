@@ -16,6 +16,7 @@ const SearchBar = ({ value, onChange }) => {
         style={s.input}
         value={value}
         placeholder="Search"
+        placeholderTextColor={Colors.white}
         onChangeText={onChange}
       />
     </View>
